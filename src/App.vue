@@ -1,32 +1,61 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div id="app" class="base-single-app">
+    <div class="app-left" :class="collapsed ? 'app-left-collapsed' : ''">
+      <base-logo></base-logo>
+      <slide-menu :collapsed="collapsed"></slide-menu>
     </div>
-    <router-view />
+    <div class="app-content">
+      <base-header
+        :collapsed.sync="collapsed"
+        class="base-header"
+      ></base-header>
+      <div class="main-content">
+        <router-view />
+        <div id="microApp"></div>
+      </div>
+    </div>
   </div>
 </template>
+<script>
+import slideMenu from "@/components/common/slide-menu";
+import BaseHeader from "./components/common/base-header.vue";
+import BaseLogo from "./components/common/base-logo.vue";
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+export default {
+  components: { slideMenu, BaseHeader, BaseLogo },
+  data() {
+    return {
+      collapsed: false,
+    };
+  },
+};
+</script>
+<style scoped lang="less">
+:root.base-single-app {
+  // :root可以避免添加前缀
+  width: 100%;
+  height: 100%;
+  display: flex;
 }
-
-#nav {
-  padding: 30px;
+.app-left {
+  flex: none;
+  background: #001529;
+  width: 200px;
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.app-left-collapsed {
+  width: auto;
 }
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+.app-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .base-header {
+    flex: none;
+  }
+  .main-content {
+    height: 100%;
+    overflow: auto;
+  }
 }
 </style>
